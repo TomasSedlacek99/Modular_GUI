@@ -1,0 +1,820 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "FischerTechnik",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "FischerTechnik Learning Factory GUI for MixedReality"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "This AAS is used as Template for future Submodels connected with FischerTechnik Learning Factory. Now it has part of the GUI implementation for Mixed Reality apps."
+        }
+      ],
+      "id": "https://example.com/ids/sm/3010_5190_4052_0293",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/4304_5131_2052_6048"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "GUI_Submodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "LineParts_Submodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2585_4190_4052_8164"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/3010_5190_4052_0293"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "GUI",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Graphical User Interface"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "This submodel acts as container for the various GUI elements of the AR app using MRTK3."
+        }
+      ],
+      "id": "GUI_Submodel",
+      "kind": "Template",
+      "submodelElements": [
+        {
+          "category": "CONSTANT",
+          "idShort": "TextBoxNodeId",
+          "displayName": [
+            {
+              "language": "en",
+              "text": "Dialog Text Box"
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Text Box dialog window based on Dialog from MRTK3 for Unity."
+            }
+          ],
+          "value": [
+            {
+              "category": "PARAMETER",
+              "idShort": "NodeId",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "NodeId"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "ID of the Node from OPC UA server to get the value"
+                }
+              ],
+              "valueType": "xs:string",
+              "value": "ns=4;i=12",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "HeaderText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Header text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the header element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "Teplota v \u00B0C",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "MainText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Main text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the main element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "Toto je pr\u00EDklad UI prvku,\nktor\u00FD zobrazuje teplotu sn\u00EDman\u00FA\nsn\u00EDma\u010Dom, ktor\u00FA aplik\u00E1cia z\u00EDskava\ncez OPC UA na z\u00E1klade NodeId. \nUI prvok je umiestnen\u00FD na statickej\npoz\u00EDcii a nemen\u00ED svoje umiestnenie.",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "FontSize",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "FontSize"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "FontSize of the DialogCanvas text, both HeaderText font size and MainText font size."
+                }
+              ],
+              "valueType": "xs:integer",
+              "value": "12",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "Position",
+              "value": [
+                {
+                  "idShort": "PosX",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position X-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the X-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "0.585",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosY",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Y-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Y-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "0.871",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosZ",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Z-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Z-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "2.857",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Rotation",
+              "value": [
+                {
+                  "idShort": "RotX",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotY",
+                  "valueType": "xs:float",
+                  "value": "20",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotZ",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Scale",
+              "value": [
+                {
+                  "idShort": "ScaX",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaY",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaZ",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "CONSTANT",
+          "idShort": "TextBoxLinkedPart",
+          "displayName": [
+            {
+              "language": "en",
+              "text": "Dialog Text Box"
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Text Box dialog window based on Dialog from MRTK3 for Unity."
+            }
+          ],
+          "value": [
+            {
+              "idShort": "HeaderText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Header text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the header element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "SortingLine",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "MainText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Main text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the main element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "The sorting line with color \r\ndetection is used for the \r\nautomated separation of \r\ndifferently colored workpieces. \r\nGeometrically identical but \r\ndifferently colored components \r\nare assigned to a color sensor \r\nwith the aid of a conveyorbelt\r\nand then separated according \r\nto their color.",
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "FontSize",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "FontSize"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "FontSize of the DialogCanvas text, both HeaderText font size and MainText font size."
+                }
+              ],
+              "valueType": "xs:integer",
+              "value": "8",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "Position",
+              "value": [
+                {
+                  "idShort": "PosX",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position X-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the X-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "0.075",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosY",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Y-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Y-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "-0.2",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosZ",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Z-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Z-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "-0.1",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "LinkedPart",
+              "valueType": "xs:string",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "LineParts_Submodel"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "Gesamtmodell_5_18_09"
+                  },
+                  {
+                    "type": "Entity",
+                    "value": "Gesamtmodell_5_18_10"
+                  },
+                  {
+                    "type": "SubmodelElementCollection",
+                    "value": "SortingLine"
+                  }
+                ]
+              },
+              "modelType": "Property"
+            },
+            {
+              "idShort": "Rotation",
+              "value": [
+                {
+                  "idShort": "RotX",
+                  "valueType": "xs:float",
+                  "value": "180",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotY",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotZ",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Scale",
+              "value": [
+                {
+                  "idShort": "ScaX",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaY",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaZ",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "category": "CONSTANT",
+          "idShort": "TextBoxBasic",
+          "displayName": [
+            {
+              "language": "en",
+              "text": "Dialog Text Box"
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Text Box dialog window based on Dialog from MRTK3 for Unity."
+            }
+          ],
+          "value": [
+            {
+              "idShort": "HeaderText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Header text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the header element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "Toto je nadpis",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "MainText",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Main text"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Text in the main element"
+                }
+              ],
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "valueType": "xs:string",
+              "value": "Toto je hlavn\u00FD text",
+              "valueId": {
+                "type": "ModelReference",
+                "keys": []
+              },
+              "modelType": "Property"
+            },
+            {
+              "category": "PARAMETER",
+              "idShort": "FontSize",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "FontSize"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "FontSize of the DialogCanvas text, both HeaderText font size and MainText font size."
+                }
+              ],
+              "valueType": "xs:integer",
+              "value": "12",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "Position",
+              "value": [
+                {
+                  "idShort": "PosX",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position X-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the X-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosY",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Y-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Y-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "1.2",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "PosZ",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Position Z-axis"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Position of the element on the Z-axis"
+                    }
+                  ],
+                  "valueType": "xs:float",
+                  "value": "2.5",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Rotation",
+              "value": [
+                {
+                  "idShort": "RotX",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotY",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "RotZ",
+                  "valueType": "xs:float",
+                  "value": "0",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "Scale",
+              "value": [
+                {
+                  "idShort": "ScaX",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaY",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                },
+                {
+                  "idShort": "ScaZ",
+                  "valueType": "xs:float",
+                  "value": "1",
+                  "modelType": "Property"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "LineParts",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Training Factory 4.0 parts"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "Parts of the Training Factory 4.0 production line model. "
+        }
+      ],
+      "id": "LineParts_Submodel",
+      "kind": "Template",
+      "submodelElements": [
+        {
+          "idShort": "Gesamtmodell_5_18_09",
+          "description": [
+            {
+              "language": "en",
+              "text": "Entity representation of the Gesamtmodell_5_18_09 model of FischerTechnik Learning Factory. This acts as container for other models in Unity. It also acts as container for GUI components which are tied to the LineParts model defined in this Submodel."
+            }
+          ],
+          "statements": [
+            {
+              "idShort": "Gesamtmodell_5_18_10",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Entity representation of the Gesamtmodell_5_18_09 model of FischerTechnik Learning Factory. This acts as container for other models in Unity. "
+                }
+              ],
+              "statements": [
+                {
+                  "idShort": "SortingLine",
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part of the FischerTechnik Learning Factory model in Unity (renamed)."
+                    }
+                  ],
+                  "value": [
+                    {
+                      "idShort": "PosX",
+                      "valueType": "xs:float",
+                      "value": "0.2730843",
+                      "modelType": "Property"
+                    },
+                    {
+                      "idShort": "PosY",
+                      "valueType": "xs:float",
+                      "value": "-0.1036707",
+                      "modelType": "Property"
+                    },
+                    {
+                      "idShort": "PosZ",
+                      "valueType": "xs:float",
+                      "value": "1.237",
+                      "modelType": "Property"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                }
+              ],
+              "entityType": "SelfManagedEntity",
+              "modelType": "Entity"
+            }
+          ],
+          "entityType": "SelfManagedEntity",
+          "modelType": "Entity"
+        }
+      ],
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "Nameplate",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Nameplate"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "Contains the nameplate information attached to the product"
+        }
+      ],
+      "id": "https://example.com/ids/sm/2585_4190_4052_8164",
+      "kind": "Template",
+      "modelType": "Submodel"
+    },
+    {
+      "idShort": "HandoverDocumentation__00__",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "HandoverDocumentation"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "The Submodel defines a set meta data for the handover of documentation from the manufacturer to the operator for industrial equipment"
+        }
+      ],
+      "id": "https://example.com/ids/sm/3010_5190_4052_0293",
+      "kind": "Template",
+      "modelType": "Submodel"
+    }
+  ]
+}
