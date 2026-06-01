@@ -34,19 +34,19 @@ public class AASFetcher : MonoBehaviour
     public string TargetPublisherId = "UnityPublisher";
 
     private OpcUaSubscriber _subscriber;
-    // Fronta na bezpeèný prenos z background vlákna
+    // Fronta na bezpeÃ¨nÃ½ prenos z background vlÃ¡kna
     private ConcurrentQueue<(string nodeId, string value)> _uiQueue = new ConcurrentQueue<(string, string)>();
-    // Zoznam premenných, na ktoré sa po parsovaní prihlásime
+    // Zoznam premennÃ½ch, na ktorÃ© sa po parsovanÃ­ prihlÃ¡sime
     private List<string> _nodeIdsToSubscribe = new List<string>();
     private long _lastJitterTimeStamp = 0;
 
     private IEnumerator Start()
     {
-        // Poèkáme, kým sa ConfigLoader nenaèíta
+        // PoÃ¨kÃ¡me, kÃ½m sa ConfigLoader nenaÃ¨Ã­ta
         while (string.IsNullOrEmpty(ConfigLoader.ServerBaseUrl))
         {
             Debug.Log("[AASFetcher] Waiting for ConfigLoader to initialize...");
-            yield return null; // poèkaj jeden frame a skús znova
+            yield return null; // poÃ¨kaj jeden frame a skÃºs znova
         }
 
         Debug.Log($"[AASFetcher] ConfigLoader ready. ServerBaseUrl = {ConfigLoader.ServerBaseUrl}");
@@ -110,7 +110,6 @@ public class AASFetcher : MonoBehaviour
                     SetDialogText(dialogInstance, header, main, fontSize);
 
                     // If NodeId is defined, bind it to the TextMeshPro component and register simulated value
-                    // THIS PART OF THE CODE IS JUST FOR THE PRESENTATION PURPOSE - SHOULD BE CHANGED IN OTHER SCENARIO!
                     if (!string.IsNullOrEmpty(nodeId))
                     {
                         Transform mainTextTransform = dialogInstance.transform.Find("Canvas/Main Text");
