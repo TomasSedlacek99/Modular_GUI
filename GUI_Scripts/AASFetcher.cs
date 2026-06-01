@@ -8,6 +8,10 @@ using SimpleJSON;
 using MixedReality.Toolkit.SpatialManipulation;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityOpcUaPublisher;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class AASFetcher : MonoBehaviour
 {
@@ -24,6 +28,17 @@ public class AASFetcher : MonoBehaviour
     /// Maps NodeId to the corresponding TextMeshProUGUI to allow live value updates.
     /// </summary>
     public static Dictionary<string, TMPro.TextMeshProUGUI> nodeIdToTextMap = new();
+    [Header("OPC UA PubSub (MQTT) Settings")]
+    public string BrokerUrl = "mqtt://192.168.1.36:1883"; 
+    public string Topic = "Machine/Sensors";
+    public string TargetPublisherId = "UnityPublisher";
+
+    private OpcUaSubscriber _subscriber;
+    // Fronta na bezpeèný prenos z background vlákna
+    private ConcurrentQueue<(string nodeId, string value)> _uiQueue = new ConcurrentQueue<(string, string)>();
+    // Zoznam premenných, na ktoré sa po parsovaní prihlásime
+    private List<string> _nodeIdsToSubscribe = new List<string>();
+    private long _lastJitterTimeStamp = 0;
 
     private IEnumerator Start()
     {
@@ -54,18 +69,31 @@ public class AASFetcher : MonoBehaviour
     /// </summary>
     private IEnumerator GetSubmodelElements()
     {
+        // Stopwatches for validation, testing and logging
+        Stopwatch totalTimer = Stopwatch.StartNew();
+        Stopwatch stepTimer = new Stopwatch();
+
         using (UnityWebRequest request = UnityWebRequest.Get(GuiAasUrl))
         {
             request.SetRequestHeader("Accept", "application/json");
             request.downloadHandler = new DownloadHandlerBuffer();
+
+            stepTimer.Start();
             yield return request.SendWebRequest();
+            stepTimer.Stop();
+            long fetchTimeMs = stepTimer.ElapsedMilliseconds;
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                stepTimer.Restart();
                 JSONNode root = JSON.Parse(request.downloadHandler.text);
                 JSONArray resultArray = root["result"].AsArray;
+                stepTimer.Stop();
+                long parseTimeMs = stepTimer.ElapsedMilliseconds;
 
                 Debug.Log($"GUI Submodel contains {resultArray.Count} elements.");
+
+                stepTimer.Restart();
 
                 foreach (JSONNode collection in resultArray)
                 {
@@ -92,9 +120,13 @@ public class AASFetcher : MonoBehaviour
                             if (textComponent != null)
                             {
                                 if (!nodeIdToTextMap.ContainsKey(nodeId))
+                                {
                                     nodeIdToTextMap.Add(nodeId, textComponent);
+                                    _nodeIdsToSubscribe.Add(nodeId);
+                                    Debug.Log($"[AASFetcher] NodeId ready to subscribe: { nodeId}");
+                                }
 
-                                SimulatedDataUpdater updater = FindObjectOfType<SimulatedDataUpdater>();
+                                /*SimulatedDataUpdater updater = FindObjectOfType<SimulatedDataUpdater>();
                                 if (updater != null && !updater.variables.Exists(v => v.NodeId == nodeId))
                                 {
                                     // Create new simulated variable if it does not exist yet = in proper OPC UA implementation this part should containt 
@@ -118,7 +150,7 @@ public class AASFetcher : MonoBehaviour
                                     };
                                     updater.variables.Add(newVar);
                                     Debug.Log($"Created simulated variable for NodeId: {nodeId}");
-                                }
+                                }*/
                             }
                         }
                     }
@@ -166,6 +198,15 @@ public class AASFetcher : MonoBehaviour
                     // Configuring of the ContentSizeFitter component
                     SetContentFitter(dialogInstance);
                 }
+                stepTimer.Stop();
+                long instantiateTimeMs = stepTimer.ElapsedMilliseconds;
+
+                if (_nodeIdsToSubscribe.Count > 0) StartOpcUaSubscription();
+
+                totalTimer.Stop();
+                long totalTimeMs = totalTimer.ElapsedMilliseconds;
+
+                Debug.Log($"[SCI_METRICS] AAS Load | Elements: {resultArray.Count} | Fetch: {fetchTimeMs}ms | Parse: {parseTimeMs}ms | Instantiate: {instantiateTimeMs}ms | Total: {totalTimeMs}ms");
             }
             else
             {
@@ -296,6 +337,82 @@ public class AASFetcher : MonoBehaviour
             var fitter = canvas.GetComponent<ContentSizeFitter>();
             fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        }
+    }
+
+    /// <summary>
+    /// Starts OPC UA (MQTT) Subscriber for all the NodeIds found
+    /// </summary>
+    private void StartOpcUaSubscription()
+    {
+        _subscriber = new OpcUaSubscriber();
+
+        _subscriber.OnMessageReceived += (nodeId, value) =>
+        {
+            if (nodeId == "ns=4;i=100") 
+            {
+                long currentTimeStamp = Stopwatch.GetTimestamp();
+                if (_lastJitterTimeStamp > 0) 
+                {
+                    double elapsedMs = (currentTimeStamp - _lastJitterTimeStamp) * 1000.0 / Stopwatch.Frequency;
+                    Debug.Log($"[SCI_METRIC] Network Jitter | Node: {nodeId} | Elapsed: {elapsedMs:F2}");
+                }
+                _lastJitterTimeStamp = currentTimeStamp;
+            }
+            Debug.Log($"Received from OPC UA: NodeId={nodeId}, Value={value.ToString()}");
+            _uiQueue.Enqueue((nodeId, value.ToString()));
+        };
+
+        try
+        {
+            string brokerUrl = !string.IsNullOrEmpty(ConfigLoader.MqttBrokerUrl) ? ConfigLoader.MqttBrokerUrl : BrokerUrl;
+            _subscriber.Subscribe(brokerUrl, Topic, TargetPublisherId, _nodeIdsToSubscribe);
+            Debug.Log($"[OPC UA] Subscribing of {_nodeIdsToSubscribe.Count} variables.");
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[OPC UA] Error during the subscribing: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Update() transforms data from OPC UA to text in the GUI elements
+    /// </summary>
+    private void Update()
+    {
+        if (_uiQueue.IsEmpty) return;
+
+        // Stopwatch for analysis and logging
+        Stopwatch frameTimer = Stopwatch.StartNew();
+        int processedMessages = 0;
+
+        while (_uiQueue.TryDequeue(out var data))
+        {
+            if (nodeIdToTextMap.TryGetValue(data.nodeId, out var uiTextComponent))
+            {
+                if (uiTextComponent != null)
+                {
+                    uiTextComponent.text = data.value;
+                    processedMessages++;
+                }
+            }
+        }
+        frameTimer.Stop();
+        if (processedMessages > 0)
+        {
+            Debug.Log($"[SCI_METRIC] OPC UA Process Queue | Processed {processedMessages} messages | Time: {frameTimer.Elapsed.TotalMilliseconds:F4}ms");
+        }
+    }
+
+    /// <summary>
+    /// Correct stoppage of MQTT connection
+    /// </summary>
+    private void OnDisable()
+    {
+        if (_subscriber != null)
+        {
+            _subscriber.Stop();
+            Debug.Log("[OPC UA] Connection stopped.");
         }
     }
 }

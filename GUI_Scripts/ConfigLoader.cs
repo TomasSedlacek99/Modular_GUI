@@ -9,6 +9,7 @@ public class ConfigLoader : MonoBehaviour
     public static string ServerBaseUrl { get; private set; } // = "http://192.168.1.36:8081";
     public static string GuiId { get; private set; }
     public static string LinePartsId { get; private set; }
+    public static string MqttBrokerUrl { get; private set; }
 
     private const string ConfigFileName = "config.json";
 
@@ -18,6 +19,7 @@ public class ConfigLoader : MonoBehaviour
         public string serverBaseUrl;
         public string GUISubmodelId;
         public string LinePartsSubmodelId;
+        public string mqttBrokerUrl;
     }
 
     void Awake()
@@ -46,6 +48,11 @@ public class ConfigLoader : MonoBehaviour
                 {
                     LinePartsId = config.LinePartsSubmodelId;
                     Debug.Log($"[ConfigLoader] Loaded LineParts Submodel Id: {LinePartsId}");
+                }
+                if (!string.IsNullOrEmpty(config.mqttBrokerUrl)) 
+                {
+                    MqttBrokerUrl = config.mqttBrokerUrl;
+                    Debug.Log($"[ConfigLoader] Loaded MQTT Broker URL: {MqttBrokerUrl}");
                 }
             }
         }
